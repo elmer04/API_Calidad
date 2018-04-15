@@ -1,0 +1,39 @@
+
+{
+"metrica": "nombre",
+"valoresmetricas": [
+                    {
+                        "mes": 5,
+                        "anio": 1998,
+                        "eess": "C.S.M.I. ANCON",
+                        "datos": {
+                            "total": 150,
+                            "sis": 40
+                        }
+                    }, {
+                        "mes": 6,
+                        "anio": 1998,
+                        "eess": "C.S.M.I. ANCON",
+                        "datos": {
+                            "total": 149,
+                            "sis": 50
+                        }
+                    }, {
+                        "mes": 5,
+                        "anio": 1998,
+                        "eess": "C.S. VILLA ESTELA",
+                        "datos": {
+                            "total": 127,
+                            "sis": 40
+                        }
+                    }, {
+                        "mes": 6,
+                        "anio": 1998,
+                        "eess": "C.S. VILLA ESTELA",
+                        "datos": {
+                            "total": 127,
+                            "sis": 30
+                        }
+                    }
+                    ]
+}

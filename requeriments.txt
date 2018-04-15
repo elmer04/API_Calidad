@@ -1,0 +1,5 @@
+django
+djangorestframework
+pyscopg2
+mysqlclient
+PyMySQL
