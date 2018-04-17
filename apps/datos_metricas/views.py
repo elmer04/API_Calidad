@@ -10,49 +10,43 @@ from rest_framework import status
 # Create your views here.
 class Datos_Metricas(APIView):
     serializer=ValorSerializer
-    def get(self,request):
+    def get(self,request,pk):
         valores=Valor.objects.all()
         response=self.serializer(valores,many=True)
         return Response(response.data)
-    def post(self, request):
+    def post(self, request,pk):
         json=request.data
-        datosmetrica=json['valoresmetricas']
-        try :
-            idmetrica=Indicador.objects.get(nombre=json['metrica']).idindicador
-        except Indicador.DoesNotExist:
-            Response('INDICADOR NO EXISTE', status=status.HTTP_400_BAD_REQUEST)
+        datosmetrica=json['months']
+        anio = json['year']
 
-
-        atributos=Atributo.objects.filter(idindicador=idmetrica).values('atributo','idatributo')
-        for datometrica in datosmetrica:
-            mes=datometrica['mes']
-            year=datometrica['anio']
+        atributos=Atributo.objects.filter(idindicador=pk).values('atributo','idatributo')
+        for valor_metrica in datosmetrica:
+            mes=valor_metrica['month']
             try:
-                datoMesYear = MesesYear.objects.get(mes=mes, year=year)
+                datoMesYear = MesesYear.objects.get(mes=mes, year=anio)
             except MesesYear.DoesNotExist:
                 datoMesYear=MesesYear.objects.create(
                                         mes=mes,
-                                        year=year
+                                        year=anio
                                         )
-            eess=datometrica['eess']
-            try:
-                datoEess = Eess.objects.get(nombre=eess)
-            except Eess.DoesNotExist:
-                return Response('EESS NO EXISTE', status=status.HTTP_400_BAD_REQUEST)
-            datos=datometrica['datos']
-            for key, value in datos.items():
+            valores_eess=valor_metrica['eess']
+
+            for eess in valores_eess:
+
+                try:
+                    renaes=Eess.objects.get(nombre=eess['nombre'])
+                except Eess.DoesNotExist:
+                    return Response('EESS NO EXISTE', status=status.HTTP_400_BAD_REQUEST)
+
                 for atributo in atributos:
-                    if key == atributo['atributo']:
-                        idatributo = Atributo.objects.get(idatributo=atributo['idatributo'])
-                        Valor.objects.create(
-                                            dato=value,
-                                            idfecha=datoMesYear,
-                                            ideess=datoEess,
-                                            idatributo=idatributo
-                                            )
-                        break
-                else:
-                    return Response('Atributo no encontrado',status.HTTP_400_BAD_REQUEST)
-        return Response('DATOS GUARDADO CORRECTAMENTE',status=status.HTTP_201_CREATED)
+                    idatributo = Atributo.objects.get(idatributo=atributo['idatributo'])
+                    valor=eess[atributo['atributo']]
+                    Valor.objects.create(
+                        dato=valor,
+                        idfecha=datoMesYear,
+                        ideess=renaes,
+                        idatributo=idatributo
+                    )
+
 
     #def post(self, request, pk):

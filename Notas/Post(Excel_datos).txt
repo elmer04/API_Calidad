@@ -37,3 +37,50 @@
                     }
                     ]
 }
+
+//NUEVO JSON
+{
+	"year": 2017,
+	"months": [
+	    {
+		"month": 1,
+		"eess": [{
+				"id": 1,
+				"renaes": "000005814",
+				"nombre": "C.S.M.I. ANCON",
+				"total": 127,
+				"sis": 105,
+				"pct": 82
+			},
+			{
+				"id": 2,
+				"renaes": "000005814",
+				"nombre": "C.S.M.I. ANCON",
+				"total": 127,
+				"sis": 105,
+				"pct": 82
+			}
+		]
+	    },
+	    {
+		"month": 2,
+		"eess": [{
+				"id": 1,
+				"renaes": "000005814",
+				"nombre": "C.S.M.I. ANCON",
+				"total": 129,
+				"sis": 103,
+				"pct": 81
+			},
+			{
+				"id": 2,
+				"renaes": "000005814",
+				"nombre": "C.S.M.I. ANCON",
+				"total": 139,
+				"sis": 100,
+				"pct": 88
+			}
+		]
+	    }
+	]
+}
