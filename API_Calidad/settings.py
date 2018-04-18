@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'apps.datos_metricas',
     'apps.EESS',
     'apps.usuario',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,6 +74,19 @@ TEMPLATES = [
     },
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
 WSGI_APPLICATION = 'API_Calidad.wsgi.application'
 
 
@@ -81,8 +97,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydb',
-        'USER': 'Steve',
-        'PASSWORD': 'Warcraft3',
+        'USER': 'root',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '3306',
     }

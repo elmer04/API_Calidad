@@ -1,5 +1,5 @@
 django
 djangorestframework
-pyscopg2
 mysqlclient
 PyMySQL
+django-cors-headers
