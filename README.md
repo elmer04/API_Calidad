@@ -12,5 +12,5 @@ TODO EN EL CMD , o en bash si es unix
     - env\Scripts\activate (en unix source env/bin/activate)
 * Pasos: 
   - Entrar al directorio del proyecto
-  - Instalar requeriments.txt:pip install -r requeriments.txt 
+  - Instalar requeriments.txt:pip install -r requirements.txt 
   - Luego le das al comando: python manage.py runserver
