@@ -31,9 +31,9 @@ class MesesYear(models.Model):
 class Valor(models.Model):
     idvalor = models.AutoField(primary_key=True)
     dato = models.FloatField(blank=True, null=True)
-    idfecha = models.ForeignKey(MesesYear,on_delete=models.CASCADE, db_column='idfecha')
-    ideess = models.ForeignKey(Eess,on_delete=models.CASCADE, db_column='idEESS')  # Field name made lowercase.
-    idatributo = models.ForeignKey(Atributo,on_delete=models.CASCADE, db_column='idatributo')
+    idfecha = models.IntegerField(db_column='idfecha')
+    ideess = models.IntegerField(db_column='idEESS')  # Field name made lowercase.
+    idatributo = models.IntegerField(db_column='idatributo')
 
     class Meta:
         managed = False

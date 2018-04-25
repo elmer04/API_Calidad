@@ -18,9 +18,9 @@ class Datos_Metricas(APIView):
 
     def post(self, request,pk):
         json=request.data[0]
-        datosmetrica=json['months']
+        datosmetrica = json['months']
         anio = json['year']
-        atributos=Atributo.objects.filter(idindicador=pk).values('atributo','idatributo')
+        atributos = Atributo.objects.filter(idindicador=pk).values('atributo', 'idatributo')
 
         for valor_metrica in datosmetrica:
             mes=valor_metrica['month']
@@ -44,18 +44,15 @@ class Datos_Metricas(APIView):
                                             renaes = eess['renaes'],
                                             diris_iddiris = Diris.objects.get(iddiris=1)
                                         )
-                print(atributos)
                 for atributo in atributos:
                     idatributo = Atributo.objects.get(idatributo=atributo['idatributo'])
                     valor=eess[atributo['atributo']]
-
-                    print('hola')
                     Valor.objects.create(
                         dato=valor,
-                        idfecha=datoMesYear,
-                        ideess=renaes,
-                        idatributo=idatributo
+                        idfecha=datoMesYear.idfecha,
+                        ideess=renaes.ideess,
+                        idatributo=idatributo.idatributo
                     )
+                    print('valor ingresado con exito')
 
         return Response(request.data,status=status.HTTP_201_CREATED)
-    #def post(self, request, pk):
