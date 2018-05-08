@@ -1,0 +1,10 @@
+
+servidor_lccal_por_defecto=http://127.0.0.1:8000
+
+<servidor>/datosmetricas/api/<pk>  : POST - Ingreso de los valores del excel
+               EXTRA:
+                    pk : el tipo de excel que se manejara , osea los datos que tendra
+
+<servidor>/eess/api : GET - devuelve todos los hospitales
+
+<servidor>/eess/renaes/<renaes> : GET - devuelve el eess de acuerdo a su renaes
