@@ -5,12 +5,12 @@ from django.shortcuts import render
 from django.db import  connection
 from rest_framework.views import APIView
 from django.http import  HttpResponse
-from apps.datos_metricas.serializers import ValorSerializer
+from apps.datos_metricas.serializers import ValorSerializer, IndicadorSerializer
 from rest_framework.response import Response
 from apps.datos_metricas.models import MesesYear,Atributo,Indicador,Valor
 from apps.usuario.models import Diris
 from apps.EESS.models import Eess
-from rest_framework import status
+from rest_framework import status,generics
 
 # Create your views here.
 class Datos_Metricas(APIView):
@@ -122,3 +122,11 @@ class Datos_Metricas(APIView):
         except KeyError:
             print(traceback.format_exc())
             return Response("Formato equivocado", status=status.HTTP_400_BAD_REQUEST)
+
+class MetricasListCreate(generics.ListCreateAPIView):
+    serializer_class = IndicadorSerializer
+    queryset = Indicador.objects.all()
+
+class MetricaUpdate(generics.RetrieveUpdateAPIView):
+    serializer_class = IndicadorSerializer
+    queryset = Indicador.objects.all()
