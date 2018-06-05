@@ -39,3 +39,17 @@ class Valor(models.Model):
         managed = False
         db_table = 'valor'
         #unique_together = (('idvalor','idfecha', 'ideess', 'idatributo'),)
+
+
+
+class Resultados(models.Model):
+    idresultados = models.AutoField(primary_key=True)
+    ideess = models.IntegerField(db_column='idEESS')  # Field name made lowercase.
+    idfecha = models.IntegerField()
+    porcentaje = models.FloatField()
+    color = models.CharField(max_length=10, blank=True, null=True)
+    idatributo = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'resultados'

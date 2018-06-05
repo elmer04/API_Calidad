@@ -5,6 +5,17 @@ servidor_lccal_por_defecto=http://127.0.0.1:8000
                EXTRA:
                     pk : el tipo de excel que se manejara , osea los datos que tendra
 
+
+<servidor>/datosmetricas/metricas : GET - devuelve todas las metricas
+
+<servidor>/datosmetricas/metrica/<pk>: GET - Devuelve la metrica
+
+<servidor>/datosmetricas/metricasUpdate: POST - Agregar metricas nuevas y elimina las antiguas
+
 <servidor>/eess/api : GET - devuelve todos los hospitales
 
 <servidor>/eess/renaes/<renaes> : GET - devuelve el eess de acuerdo a su renaes
+
+<servidor>/eess/eessMetricaColor/<int:metrica>/<str:color>: GET- devuelve por color los eess.
+
+<servidor>/eess/eessMetricaColor/<int:metrica>: GET-devuelve todos los eess

@@ -71,6 +71,7 @@ class Datos_Metricas(APIView):
         try:
             #algoritmo MEJORADO DE 10 SEGUNDOS por excel
             cursor=connection.cursor()
+            print(request.data)
             json = request.data[0]
             datosmetrica = json['months']
             anio = json['year']
@@ -89,16 +90,22 @@ class Datos_Metricas(APIView):
                 valores_eess = valor_metrica['eess']
                 for eess in valores_eess:
                     try:
-                        renaes = Eess.objects.get(renaes=eess['renaes'])
+                        print(eess['nombre'])
+                        renaes = Eess.objects.get(nombre=eess['nombre'])
                     except Eess.DoesNotExist:
+                        renaes=''
+                        if 'renaes' in eess.keys():
+                            print("crear sin renaes")
+                            renaes=eess['renaes']
                         renaes = Eess.objects.create(
                             nombre=eess['nombre'],
                             tipo=1,
                             gerente='Steve',
                             direccion='Mi casa',
-                            renaes=eess['renaes'],
+                            renaes=renaes,
                             diris_iddiris=Diris.objects.get(iddiris=1)
                         )
+                        print("CREADO "+eess['nombre'])
                     for atributo in atributos:
                         idatributo = Atributo.objects.get(idatributo=atributo['idatributo'])
                         valor = eess[atributo['atributo']]
@@ -108,6 +115,8 @@ class Datos_Metricas(APIView):
                           #  ideess=renaes.ideess,
                           #  idatributo=idatributo.idatributo
                         #)
+                        if(not valor):
+                            valor=0;
                         value=[valor,
                                datoMesYear.idfecha,
                                renaes.ideess,
@@ -130,3 +139,20 @@ class MetricasListCreate(generics.ListCreateAPIView):
 class MetricaUpdate(generics.RetrieveUpdateAPIView):
     serializer_class = IndicadorSerializer
     queryset = Indicador.objects.all()
+
+class MetricasUpdate(APIView):
+    def post(self,request):
+        metricas = request.data
+        for metrica in metricas:
+            Indicador.objects.filter(idindicador=metrica['idindicador']).update(nombre=metrica['nombre'])
+        return Response("Metricas subida con exito", status=status.HTTP_201_CREATED)
+
+class ponerColor(APIView):
+    def get(self,request,metrica):
+        atributo=Atributo.objects.get(idindicador=metrica,atributo='pct')
+        cur = connection.cursor()
+        fechas=MesesYear.objects.all()
+        for fecha in fechas :
+            cur.callproc('max_min', [fecha.idfecha,atributo.idatributo])
+        cur.close()
+        return Response("Procedure completado")
