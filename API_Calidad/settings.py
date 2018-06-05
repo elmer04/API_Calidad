@@ -25,7 +25,7 @@ SECRET_KEY = 'z+6!p002l#cdz^1d++k72#k+%o$oq^zqqjrv=t#%hr0dn=1_d('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['apipeves.herokuapp.com']
 
 
 # Application definition
