@@ -80,6 +80,7 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1',
     'localhost',
     '.herokuapp.com',
+    'peves.herokuapp.com',
 )
 
 CORS_ALLOW_METHODS = (
