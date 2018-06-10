@@ -7,6 +7,7 @@ from apps.EESS.models import Eess
 from apps.EESS.serializers import EessSerializer
 
 # Create your views here.
+from apps.datos_metricas.serializers import ResultadoSerializer
 
 
 class EESSList(APIView):
@@ -22,7 +23,7 @@ class EESSMetricaColor(APIView):
     def get(self,request,metrica,color=''):
         #metrica=1
         atributo=Atributo.objects.get(idindicador=metrica, atributo="pct")
-        MesYear=MesesYear.objects.all().reverse()[0]
+        MesYear=MesesYear.objects.all().order_by('-idfecha')[0]
         if color != '' :
             resultado=Resultados.objects.filter(color=color,idfecha=MesYear.idfecha,idatributo=atributo.idatributo)
         else:
@@ -36,15 +37,35 @@ class EESSMetricaColor(APIView):
             response.append(json)
         return Response(response)
 
-class EESSgetRenaes(generics.RetrieveAPIView):
-    lookup_field = 'renaes'
-    queryset = Eess.objects.all()
-    serializer_class = EessSerializer
+class EESSgetRenaes(APIView):
+    serializerEess= EessSerializer
+    serializerResultado =ResultadoSerializer
+    def get(self,request,renaes):
+        try:
+            eess=Eess.objects.get(renaes=renaes)
+        except Eess.DoesNotExist:
+            return Response('NO EXISTE EL CENTRO DE SALUD',status=status.HTTP_400_BAD_REQUEST)
+        MesYear = MesesYear.objects.all().order_by('-idfecha')[0]
+        resultados=Resultados.objects.filter(ideess=eess.ideess,idfecha=MesYear.idfecha)
+        resultadoResponse = (self.serializerResultado(resultados,many=True)).data
+        response=(self.serializerEess(eess)).data
+        response['metricas']=resultadoResponse
+        return Response(response,status=status.HTTP_200_OK)
 
-class EESSgetNombre(generics.RetrieveAPIView):
-    lookup_field = 'nombre'
-    queryset = Eess.objects.all()
-    serializer_class = EessSerializer
+class EESSgetNombre(APIView):
+    serializerEess= EessSerializer
+    serializerResultado =ResultadoSerializer
+    def get(self,request,nombre):
+        try:
+            eess=Eess.objects.get(nombre=nombre)
+        except Eess.DoesNotExist:
+            return Response('NO EXISTE EL CENTRO DE SALUD',status=status.HTTP_400_BAD_REQUEST)
+        MesYear = MesesYear.objects.all().order_by('-idfecha')[0]
+        resultados=Resultados.objects.filter(ideess=eess.ideess,idfecha=MesYear.idfecha)
+        resultadoResponse = (self.serializerResultado(resultados,many=True)).data
+        response=(self.serializerEess(eess)).data
+        response['metricas']=resultadoResponse
+        return Response(response,status=status.HTTP_200_OK)
 
 
 

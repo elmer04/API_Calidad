@@ -1,6 +1,8 @@
 
 servidor_lccal_por_defecto=http://127.0.0.1:8000
 
+
+//datos metricas
 <servidor>/datosmetricas/api/<pk>  : POST - Ingreso de los valores del excel
                EXTRA:
                     pk : el tipo de excel que se manejara , osea los datos que tendra
@@ -12,9 +14,15 @@ servidor_lccal_por_defecto=http://127.0.0.1:8000
 
 <servidor>/datosmetricas/metricasUpdate: POST - Agregar metricas nuevas y elimina las antiguas
 
+<servidor>/datosmetricas/ponerColor/<int:metrica>: GET - poner colores a las metricas ( procedure max-min)
+
+
+//eess
 <servidor>/eess/api : GET - devuelve todos los hospitales
 
 <servidor>/eess/renaes/<renaes> : GET - devuelve el eess de acuerdo a su renaes
+
+<servidor>/eess/nombre/<nombre> : GET - devuelve el eess de acuerdo a su nombre
 
 <servidor>/eess/eessMetricaColor/<int:metrica>/<str:color>: GET- devuelve por color los eess.
 
