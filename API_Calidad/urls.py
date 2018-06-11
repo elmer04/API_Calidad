@@ -20,4 +20,5 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('datosmetricas/',include('apps.datos_metricas.url')),
     path('eess/',include('apps.EESS.url')),
+    path('usuario/',include('apps.usuario.url')),
 ]
