@@ -1,0 +1,1 @@
+tipo = 0 es admin , 1 es usuaria.

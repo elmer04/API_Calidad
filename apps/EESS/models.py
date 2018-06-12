@@ -10,7 +10,10 @@ class Eess(models.Model):
     gerente = models.CharField(max_length=45, blank=True, null=True)
     direccion = models.CharField(max_length=45, blank=True, null=True)
     renaes = models.CharField(max_length=45, blank=True, null=True)
-    diris_iddiris = models.ForeignKey(Diris,on_delete=models.CASCADE, db_column='diris_iddiris')
+    diris_iddiris = models.ForeignKey(Diris,on_delete=models.DO_NOTHING, db_column='diris_iddiris')
+    estado = models.IntegerField(blank=True, null=True)
+    latitud = models.FloatField(blank=True, null=True)
+    longitud = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -22,31 +25,10 @@ class Anotaciones(models.Model):
     fecha = models.DateField(blank=True, null=True)
     estado = models.IntegerField(blank=True, null=True)
     anotacionescol = models.CharField(max_length=45, blank=True, null=True)
-    eess_ideess = models.ForeignKey(Eess,on_delete=models.CASCADE, db_column='EESS_idEESS')  # Field name made lowercase.
+    eess_ideess = models.ForeignKey(Eess,on_delete=models.DO_NOTHING, db_column='EESS_idEESS')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'anotaciones'
 
 
-
-
-class VisitasEess(models.Model):
-    idvisitas = models.AutoField(primary_key=True)
-    observacion = models.TextField(blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
-    eess_ideess = models.ForeignKey(Eess,on_delete=models.CASCADE, db_column='EESS_idEESS')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'visitas-eess'
-        #unique_together = (('idvisitas', 'eess_ideess'),)
-
-class Horario(models.Model):
-    idhorario = models.AutoField(primary_key=True)
-    prioridad = models.IntegerField()
-    eess_ideess = models.ForeignKey(Eess,on_delete=models.CASCADE, db_column='EESS_idEESS')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'horario'

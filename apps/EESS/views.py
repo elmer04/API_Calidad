@@ -20,17 +20,17 @@ class EESSList(APIView):
 
 class EESSMetricaColor(APIView):
     serializer=EessSerializer
-    def get(self,request,metrica,color=''):
+    def get(self,request,iddiris,metrica,color=''):
         #metrica=1
         atributo=Atributo.objects.get(idindicador=metrica, atributo="pct")
         MesYear=MesesYear.objects.all().order_by('-idfecha')[0]
         if color != '' :
-            resultado=Resultados.objects.filter(color=color,idfecha=MesYear.idfecha,idatributo=atributo.idatributo)
+            resultado=Resultados.objects.filter(ideess__diris_iddiris_id=iddiris,color=color,idfecha=MesYear.idfecha,idatributo=atributo.idatributo)
         else:
-            resultado =Resultados.objects.filter(idfecha=MesYear.idfecha,idatributo=atributo.idatributo)
+            resultado =Resultados.objects.filter(ideess__diris_iddiris_id=iddiris,idfecha=MesYear.idfecha,idatributo=atributo.idatributo)
         response=[]
         for resul in resultado:
-            eess=Eess.objects.get(ideess=resul.ideess)
+            eess=Eess.objects.get(ideess=resul.ideess.ideess)
             json=(self.serializer(eess)).data
             json['color']=resul.color
             json['porcentaje']=resul.porcentaje
@@ -40,9 +40,9 @@ class EESSMetricaColor(APIView):
 class EESSgetRenaes(APIView):
     serializerEess= EessSerializer
     serializerResultado =ResultadoSerializer
-    def get(self,request,renaes):
+    def get(self,request,renaes,iddiris):
         try:
-            eess=Eess.objects.get(renaes=renaes)
+            eess=Eess.objects.get(renaes=renaes,iddiris=iddiris)
         except Eess.DoesNotExist:
             return Response('NO EXISTE EL CENTRO DE SALUD',status=status.HTTP_400_BAD_REQUEST)
         MesYear = MesesYear.objects.all().order_by('-idfecha')[0]
@@ -55,9 +55,9 @@ class EESSgetRenaes(APIView):
 class EESSgetNombre(APIView):
     serializerEess= EessSerializer
     serializerResultado =ResultadoSerializer
-    def get(self,request,nombre):
+    def get(self,request,nombre,iddiris):
         try:
-            eess=Eess.objects.get(nombre=nombre)
+            eess=Eess.objects.get(nombre=nombre,iddiris=iddiris)
         except Eess.DoesNotExist:
             return Response('NO EXISTE EL CENTRO DE SALUD',status=status.HTTP_400_BAD_REQUEST)
         MesYear = MesesYear.objects.all().order_by('-idfecha')[0]

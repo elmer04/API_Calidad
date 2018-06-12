@@ -27,3 +27,8 @@ servidor_lccal_por_defecto=http://127.0.0.1:8000
 <servidor>/eess/eessMetricaColor/<int:metrica>/<str:color>: GET- devuelve por color los eess.
 
 <servidor>/eess/eessMetricaColor/<int:metrica>: GET-devuelve todos los eess
+
+//usuario
+<servidor>/login : POST- ingresas la clave y ussername del usuario y te devuelve una serie de paremtros
+                    para proceder con el login
+<servidor>/getUser/<int:id> : GET-devuelve al usuario  ingresando su id

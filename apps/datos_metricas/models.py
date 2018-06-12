@@ -13,7 +13,7 @@ class Indicador(models.Model):
 class Atributo(models.Model):
     idatributo = models.AutoField(primary_key=True)
     atributo = models.CharField(max_length=20, blank=True, null=True)
-    idindicador = models.ForeignKey(Indicador,on_delete=models.CASCADE, db_column='idindicador')
+    idindicador = models.ForeignKey(Indicador,on_delete=models.DO_NOTHING, db_column='idindicador')
 
     class Meta:
         managed = False
@@ -44,7 +44,7 @@ class Valor(models.Model):
 
 class Resultados(models.Model):
     idresultados = models.AutoField(primary_key=True)
-    ideess = models.IntegerField(db_column='idEESS')  # Field name made lowercase.
+    ideess = models.ForeignKey(Eess, on_delete=models.DO_NOTHING,db_column='idEESS')  # Field name made lowercase.
     idfecha = models.IntegerField()
     porcentaje = models.FloatField()
     color = models.CharField(max_length=10, blank=True, null=True)
