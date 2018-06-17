@@ -1,3 +1,5 @@
+import json
+
 from django.db import  connection
 from django.shortcuts import render
 from rest_framework import status,generics
@@ -5,7 +7,7 @@ from rest_framework.response import Response
 from Algoritmos.algoritmos_bd import dictfetchall
 from apps.datos_metricas.models import MesesYear, Resultados, Indicador, Atributo
 from rest_framework.views import APIView
-from apps.EESS.models import Eess
+from apps.EESS.models import Eess, Anotaciones
 from apps.EESS.serializers import EessSerializer
 
 # Create your views here.
@@ -50,7 +52,6 @@ class EESSMetricaColor(APIView):
         cursor.execute(sql,valores)
         datos=dictfetchall(cursor)
         cursor.close()
-        print(datos)
         return Response(datos)
 
 class EESSgetRenaes(APIView):
@@ -68,7 +69,7 @@ class EESSgetRenaes(APIView):
         response['metricas']=resultadoResponse"""
         datos=[renaes,iddiris]
         sql="""select * from eess where renaes=(%s) and diris_iddiris=(%s)"""
-        sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje from resultados r
+        sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje,r.idfecha from resultados r
                 join atributo a on r.idatributo=a.idatributo
                 join indicador i on a.idindicador = i.idindicador
                 where r.idfecha=
@@ -98,7 +99,7 @@ class EESSgetNombre(APIView):
         response['metricas']=resultadoResponse"""
         datos=[nombre,iddiris]
         sql="""select * from eess where nombre=(%s) and diris_iddiris=(%s)"""
-        sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje from resultados r
+        sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje,r.idfecha from resultados r
                 join atributo a on r.idatributo=a.idatributo
                 join indicador i on a.idindicador = i.idindicador
                 where r.idfecha=
@@ -113,5 +114,36 @@ class EESSgetNombre(APIView):
 
         return Response(response[0],status=status.HTTP_200_OK)
 
+class EessNotas(APIView):
+    def get(self,request,ideess,idfecha):
+        cursor=connection.cursor()
+        sql="""select anotacion,titulo,contenido,estado 
+                              from anotaciones
+                              where fecha=(%s) and EESS_idEESS=(%s)"""
+        cursor.execute(sql,[idfecha,ideess])
+        response=dictfetchall(cursor)
+        cursor.close()
+        return Response(response,status=status.HTTP_200_OK)
 
+    def post(self,request,ideess,idfecha):
+        data=request.data
+        cursor = connection.cursor()
 
+        sql="""delete from anotaciones where EESS_idEESS=(%s) and fecha=(%s)"""
+        cursor.execute(sql,[ideess,idfecha])
+        values=[]
+        fecha = idfecha
+        id_diris = ideess
+        estado = True
+        for datos in data:
+            titulo=datos['titulo']
+            anotacion=datos['anotacion']
+            contenido=datos['contenido']
+            value=[anotacion, titulo, json.dumps(contenido), estado, fecha, id_diris]
+            #print(contenido)
+            values.append(value)
+
+        cursor.executemany('insert into anotaciones(anotacion, titulo, contenido, estado, fecha, EESS_idEESS) values (%s,%s,%s,%s,%s,%s)', values)
+        cursor.close()
+        print('Completado')
+        return Response('INGRESO DE ANOTACIONES CON EXITO', status=status.HTTP_200_OK)
