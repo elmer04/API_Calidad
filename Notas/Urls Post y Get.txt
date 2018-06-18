@@ -32,3 +32,8 @@ servidor_lccal_por_defecto=http://127.0.0.1:8000
 <servidor>/login : POST- ingresas la clave y ussername del usuario y te devuelve una serie de paremtros
                     para proceder con el login
 <servidor>/getUser/<int:id> : GET-devuelve al usuario  ingresando su id
+
+<servidor>/eess/notas/<int:ideess>/<int:idfecha>: GET- Devuelve las notas
+                                                  POST- Ingreso de notas nuevas.
+
+<servidor>/eess/fechas : GET-Devuelve las fechas

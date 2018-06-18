@@ -10,4 +10,5 @@ urlpatterns = [
     path('metrica/<pk>', views.MetricaUpdate.as_view(), name='get_update_metrica'),
     path('metricasUpdate', views.MetricasUpdate.as_view(), name='get_update_metricas'),
     path('ponerColor/<int:metrica>',views.ponerColor.as_view(),name='probando'),
+    path('fechas',views.ListFechas.as_view(),name='get_list_fechas'),
 ]

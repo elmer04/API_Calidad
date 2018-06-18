@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.db import  connection
 from rest_framework.views import APIView
 from django.http import  HttpResponse
+from Algoritmos.algoritmos_bd import dictfetchall
 from apps.datos_metricas.serializers import ValorSerializer, IndicadorSerializer
 from rest_framework.response import Response
 from apps.datos_metricas.models import MesesYear,Atributo,Indicador,Valor
@@ -156,3 +157,12 @@ class ponerColor(APIView):
             cur.callproc('max_min', [fecha.idfecha,atributo.idatributo])
         cur.close()
         return Response("Procedure completado")
+
+class ListFechas(APIView):
+    def get(self,request):
+        sql="select * from `meses-year` "
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        datos=dictfetchall(cursor)
+        cursor.close()
+        return Response(datos,status=status.HTTP_200_OK)
