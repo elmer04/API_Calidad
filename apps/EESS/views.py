@@ -147,3 +147,15 @@ class EessNotas(APIView):
         cursor.close()
         print('Completado')
         return Response('INGRESO DE ANOTACIONES CON EXITO', status=status.HTTP_200_OK)
+
+class EESSMetricasColorFecha(APIView):
+    def get(self,request,ideess,idfecha):
+        sql="""select i.idindicador,r.color,i.nombre,r.porcentaje,r.idfecha from resultados r
+                join atributo a on r.idatributo=a.idatributo
+                join indicador i on a.idindicador = i.idindicador
+                where r.idfecha=(%s)
+                     and r.idEESS=(%s)"""
+        cursor=connection.cursor()
+        cursor.execute(sql,[idfecha,ideess])
+        response=dictfetchall(cursor)
+        return Response(response,status=status.HTTP_200_OK)

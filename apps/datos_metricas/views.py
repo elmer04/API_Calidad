@@ -160,9 +160,10 @@ class ponerColor(APIView):
 
 class ListFechas(APIView):
     def get(self,request):
-        sql="select * from `meses-year` "
+        sql="select idfecha,CONCAT(LPAD(mes,2,'0'),'-',year) as fecha from `meses-year` order by idfecha desc"
         cursor = connection.cursor()
         cursor.execute(sql)
         datos=dictfetchall(cursor)
         cursor.close()
         return Response(datos,status=status.HTTP_200_OK)
+
