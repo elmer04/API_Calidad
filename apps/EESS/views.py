@@ -68,7 +68,10 @@ class EESSgetRenaes(APIView):
         response=(self.serializerEess(eess)).data
         response['metricas']=resultadoResponse"""
         datos=[renaes,iddiris]
-        sql="""select * from eess where renaes=(%s) and diris_iddiris=(%s)"""
+        sql="""select e.*,p.color,p.porcentaje from eess e
+                    join promedio p on e.idEESS=p.idEESS
+                    where p.idfecha=(select idfecha from `meses-year` order by idfecha desc limit 1)
+                    and e.renaes=(%s) and e.diris_iddiris=(%s)"""
         sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje,r.idfecha from resultados r
                 join atributo a on r.idatributo=a.idatributo
                 join indicador i on a.idindicador = i.idindicador
@@ -98,7 +101,10 @@ class EESSgetNombre(APIView):
         response=(self.serializerEess(eess)).data
         response['metricas']=resultadoResponse"""
         datos=[nombre,iddiris]
-        sql="""select * from eess where nombre=(%s) and diris_iddiris=(%s)"""
+        sql="""select e.*,p.color,p.porcentaje from eess e
+                    join promedio p on e.idEESS=p.idEESS
+                    where p.idfecha=(select idfecha from `meses-year` order by idfecha desc limit 1)
+                    and e.nombre=(%s) and e.diris_iddiris=(%s)"""
         sql2 = """select i.idindicador,r.color,i.nombre,r.porcentaje,r.idfecha from resultados r
                 join atributo a on r.idatributo=a.idatributo
                 join indicador i on a.idindicador = i.idindicador
@@ -159,3 +165,29 @@ class EESSMetricasColorFecha(APIView):
         cursor.execute(sql,[idfecha,ideess])
         response=dictfetchall(cursor)
         return Response(response,status=status.HTTP_200_OK)
+
+class EessPromedioColor(APIView):
+    def get(self,request,iddiris,color=""):
+        sql=""
+        datos=[]
+        datos.append(iddiris)
+        sql="""select e.*,p.color,p.porcentaje from promedio p
+               join eess e on p.idEESS=e.idEESS
+               where e.diris_iddiris=(%s) and p.idfecha= (select idfecha from `meses-year` order by idfecha desc limit 1)"""
+        if color!="":
+            sql=sql+"and color=(%s)"
+            datos.append(color)
+        cursor = connection.cursor()
+        cursor.execute(sql, datos)
+        response=dictfetchall(cursor)
+        cursor.close()
+        return Response(response,status=status.HTTP_200_OK)
+
+class EessFechaColor(APIView):
+    def get (self,request,ideess,idfecha):
+        datos=[ideess,idfecha]
+        sql="""select color,porcentaje from promedio where idEESS=(%s) and idfecha=(%s)"""
+        cursor = connection.cursor()
+        cursor.execute(sql, datos)
+        response=dictfetchall(cursor)
+        return Response(response[0],status=status.HTTP_200_OK)

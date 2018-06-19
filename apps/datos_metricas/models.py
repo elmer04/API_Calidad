@@ -4,7 +4,8 @@ from apps.EESS.models import Eess
 # Create your models here.
 class Indicador(models.Model):
     idindicador = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=45, blank=True, null=True)
+    nombre = models.CharField(max_length=90, blank=True, null=True)
+    diminutivo = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
