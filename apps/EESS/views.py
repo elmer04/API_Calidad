@@ -16,9 +16,10 @@ from apps.datos_metricas.serializers import ResultadoSerializer
 
 class EESSList(APIView):
     serializer=EessSerializer
-    def get(self,request):
-        eess=Eess.objects.all()
+    def get(self,request,iddiris):
+        eess=Eess.objects.all().filter(diris_iddiris=iddiris)
         response=self.serializer(eess,many=True)
+        print(response.data)
         return Response(response.data)
 
 
