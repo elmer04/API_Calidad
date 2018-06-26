@@ -1,1 +1,1 @@
-web: gunicorn API_Calidad.wsgi
+web: gunicorn API_Calidad.wsgi --timeout 1000 --keep-alive 5
