@@ -1,0 +1,11 @@
+//LOCALHOST
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'calidad',
+        'USER': 'root',
+        'PASSWORD': 'Warcraft3',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}

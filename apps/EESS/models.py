@@ -24,7 +24,8 @@ class Anotaciones(models.Model):
     anotacion = models.TextField(blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
     estado = models.IntegerField(blank=True, null=True)
-    anotacionescol = models.CharField(max_length=45, blank=True, null=True)
+    titulo = models.CharField(max_length=45, blank=True, null=True)
+    #contenido  JSON ( SE MANEJA DIRECTAMENT EN QUERY POR MOTIVOS DE RAPIDEZ)
     eess_ideess = models.ForeignKey(Eess,on_delete=models.DO_NOTHING, db_column='EESS_idEESS')  # Field name made lowercase.
 
     class Meta:
