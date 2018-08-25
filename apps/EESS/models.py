@@ -17,7 +17,7 @@ class Eess(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'EESS'
+        db_table = 'eess'
 
 class Anotaciones(models.Model):
     idanotaciones = models.AutoField(primary_key=True)
