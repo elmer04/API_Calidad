@@ -102,9 +102,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'calidad',
-        'USER': 'root',
+        'USER': 'steve.matos',
         'PASSWORD': 'Warcraft3',
-        'HOST': 'localhost',
+        'HOST': '35.237.83.215',
         'PORT': '3306',
     }
 }
